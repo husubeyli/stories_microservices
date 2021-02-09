@@ -1,0 +1,12 @@
+Delete a story
+This endpoint delete a story
+
+---
+tags:
+  - story
+
+responses:
+  204:
+    description: Delete successfully
+  404:
+    description: Not found 

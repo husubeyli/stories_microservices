@@ -1,0 +1,96 @@
+Update recipe
+This endpoint for update recipe information by owner
+---
+tags:
+  - recipes
+definitions:
+  Recipe:
+    type: object
+    properties:
+      category_id:
+        type: integer
+        required: false
+        description: Get Category Id
+        default: 1
+      owner_id:
+        type: integer
+        required: false
+        description: Get Owner Id
+        default: 1
+      tags:
+        type: array
+        description: Get Tags Id
+        required: false
+        items:
+          type: integer
+
+      slug:
+        type: string
+        required: false
+        description: Get Slug
+        minimum: 1
+        maximum: 120
+      title:
+        type: string
+        required: false
+        description: Get title
+        minimum: 1
+        maximum: 80
+      description:
+        type: string
+        required: false
+        description: Get description
+      short_description:
+        type: string
+        required: false
+        description: Get short_description
+      image:
+        type: string
+        description: Get Image
+        format: byte
+        required: false
+      is_published:
+        type: boolean
+        required: false
+        default: true
+        description: Get is_published
+      created_at:
+        type: string
+        readOnly: true
+        format: datetime
+        description: Get created_at
+      updated_at:
+        type: string
+        readOnly: true
+        format: datetime
+        description: Get update_at
+consumes:
+ - "application/json"
+ - "application/xml"
+ - "multipart/form-data"
+produces:
+ - "application/json"
+ - "application/xml"
+parameters:
+  - name: recipe_id
+    in: body
+    type: integer
+    required: true
+    
+  - name: data
+    in: path
+    type: integer
+    schema:
+      $ref: '#/definitions/Recipe'
+
+responses:
+
+  200:
+    description: Recipe updated successfully
+    schema:
+      $ref: '#/definitions/Recipe'
+    examples:
+      $ref: '#/definitions/Recipe'
+
+  400:
+    description: Bad Request 

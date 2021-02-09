@@ -1,0 +1,12 @@
+Delete a tag
+This endpoint delete a tag
+
+---
+tags:
+  - tags
+
+responses:
+  204:
+    description: Delete successfully
+  404:
+    description: Not found 

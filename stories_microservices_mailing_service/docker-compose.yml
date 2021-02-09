@@ -1,0 +1,14 @@
+version: '3.5'
+services:  
+  mailing:
+    build: .
+    command: python main.py
+    volumes:
+      - .:/code
+    env_file: ./.env
+
+
+networks:
+  default:
+    external:
+      name: redis

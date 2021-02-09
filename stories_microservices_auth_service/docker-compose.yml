@@ -1,0 +1,31 @@
+version: '3'
+services:
+
+  auth_db:
+    container_name:  auth_db
+    image:           postgres
+    ports:
+      - 5433:5432 # Bind host port 5433 to PostgreSQL port 5432
+    restart: always
+    volumes:
+      - ./user-db-data:/var/lib/postgresql/data
+    env_file: ./.env
+    environment:
+      - LC_ALL=C.UTF-8
+
+    
+  web:
+    build: .
+    ports:
+      - "8003:8000"
+    command: gunicorn auth_service.wsgi:app --bind 0.0.0.0 -p 8000
+    volumes:
+      - .:/code
+    depends_on:
+      - "auth_db"
+    env_file: ./.env
+
+networks:
+  default:
+    external:
+      name: redis   

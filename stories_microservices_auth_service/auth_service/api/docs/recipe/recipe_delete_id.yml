@@ -1,0 +1,12 @@
+Delete a recipe
+This endpoint delete a recipe
+
+---
+tags:
+  - recipes
+
+responses:
+  204:
+    description: Delete successfully
+  404:
+    description: Not found 

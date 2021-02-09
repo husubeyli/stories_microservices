@@ -1,0 +1,42 @@
+version: '3.5'
+services:
+
+  subscribers_db:
+    container_name:  postgres-subs-db
+    image:           postgres
+    ports:
+      - 5434:5432 # Bind host port 5432 to PostgreSQL port 5434
+    restart: always
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+    env_file: ./.env
+    environment:
+      - LC_ALL=C.UTF-8
+
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    command: gunicorn subscribers_service.wsgi:app --bind 0.0.0.0 -p 8000
+    volumes:
+      - .:/code
+    depends_on:
+      - "subscribers_db"
+    env_file: ./.env 
+
+  celery:
+    build:
+      context: .
+      dockerfile: celery.dockerfile
+    command: celery -A subscribers_service.config.celery worker --loglevel=INFO -B
+    volumes:
+      - .:/code
+    depends_on:
+      - "subscribers_db"
+    env_file: ./.env
+
+
+networks:
+  default:
+    external:
+      name: redis

@@ -1,0 +1,30 @@
+version: '3'
+services:
+
+  post_db:
+    container_name:  postgres-db
+    image:           postgres
+    ports:
+      - 5432:5432 # Bind host port 5432 to PostgreSQL port 5432
+    restart: always
+    volumes:
+      - ./post-db-data:/var/lib/postgresql/data
+    env_file: ./.env
+    environment:
+      - LC_ALL=C.UTF-8
+
+  web:
+    build: .
+    ports:
+      - "8002:8000"
+    command: gunicorn post_service.wsgi:app --bind 0.0.0.0 -p 8000
+    volumes:
+      - .:/code
+    depends_on:
+      - "post_db"
+    env_file: ./.env
+
+networks:
+  default:
+    external:
+      name: redis

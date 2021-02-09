@@ -1,0 +1,34 @@
+version: '3.1'
+
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    ports: 
+      - 27017:27017
+    env_file: ./.env
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    env_file: ./.env
+
+
+  web:
+    build: .
+    ports:
+      - "8004:8000"
+    command: gunicorn comment_service.wsgi:app --bind 0.0.0.0 -p 8000
+    volumes:
+      - .:/code
+    depends_on:
+      - "mongo"
+    env_file: ./.env
+
+networks:
+  default:
+    external:
+      name: redis

@@ -1,0 +1,12 @@
+Delete a category
+This endpoint delete a category
+
+---
+tags:
+  - category
+
+responses:
+  204:
+    description: Delete successfully
+  404:
+    description: Not found 
